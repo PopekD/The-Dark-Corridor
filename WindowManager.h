@@ -15,7 +15,6 @@ class WindowManager {
         sf::RenderWindow window;
         Minimap minimap;
         Player player;
-        Raycast raycast;
 };
 
 #endif

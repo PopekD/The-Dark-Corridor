@@ -1,8 +1,16 @@
 #include "Raycast.h"
 
-Raycast::Raycast()
+Raycast::Raycast(sf::RenderWindow& window)
 {
-	playerAngle = 0.f;
+	FOV = 60.0f;
+	SCREEN_WIDTH = window.getSize().x;
+	SCREEN_HEIGHT = window.getSize().y;
 }
+
+void Raycast::castRay(sf::RenderWindow& window)
+{
+
+}
+
 
 Raycast::~Raycast(){}

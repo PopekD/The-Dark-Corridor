@@ -5,11 +5,14 @@
 #include "Player.h"
 class Raycast {
 	public:
-		Raycast();
-		//void castRay(sf::RenderWindow& window);
+		Raycast(sf::RenderWindow& window);
+		void castRay(sf::RenderWindow& window);
 		~Raycast();
 	private:
-		float playerAngle;
+		float FOV;
+		unsigned int SCREEN_WIDTH;
+		unsigned int SCREEN_HEIGHT;
+		Player player;
 };
 
 #endif

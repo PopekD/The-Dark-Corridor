@@ -2,37 +2,51 @@
 #include <iostream>
 
 sf::RectangleShape Player::player;
-
-Player::Player(): speed(0.10f) {
-    player.setSize(sf::Vector2f(10.0f, 10.0f));
-	player.setPosition(sf::Vector2f(50.0f, 50.0f));
-    player.setFillColor(sf::Color::Red);
+float Player::speed = 1.0f;
+sf::Vector2f Player::movement(0.f, 0.f);
+float Player::rotation = 0.0f;
+Player::Player() {
+    player.setSize(sf::Vector2f(09.0f, 09.0f));
+	player.setPosition(sf::Vector2f(30.0f, 30.0f));
+    player.setFillColor(sf::Color::Green);
+    
 }
-void Player::playerMove()
+void Player::playerMove(sf::RenderWindow& window, float angle)
 {
+    
+    player.setOrigin(player.getLocalBounds().width / 2, player.getLocalBounds().height / 2);
+    
+    rotation += angle;
+    player.setRotation(rotation);
+
+    float radians = rotation * M_PI / 180;
+
+    sf::Vector2f direction(std::cos(radians), std::sin(radians));
+    direction /= std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
     movement.x = 0.f;
     movement.y = 0.f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
-        movement.x -= speed;
+        movement += sf::Vector2f(direction.y, -direction.x) * speed;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
-        movement.x += speed;
+        movement -= sf::Vector2f(direction.y, -direction.x) * speed;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        movement.y -= speed;
+        movement += direction * speed;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        movement.y += speed;
+        movement -= direction * speed;
     }
 
     if (movement.x != 0.f && movement.y != 0.f)
     {
-        movement /= std::sqrt(2.f);
+       movement /= std::sqrt(2.f);
     }
 
     for (int i = 0; i < Minimap::ROWS; i++) {
@@ -67,17 +81,19 @@ void Player::playerMove()
         }
                 
     }
+    
+
     player.move(movement);
-   
 }
 
 sf::FloatRect Player::getBoundingBox() {
     return player.getGlobalBounds();
 }
+
 sf::Vector2f Player::getPlayerPosition() {
-    sf::FloatRect playerBounds = getBoundingBox();
-    return sf::Vector2f(playerBounds.left + playerBounds.width / 2.0f, playerBounds.top + playerBounds.height / 2.0f);
+    return player.getPosition();
 }
+
 
 
 void Player::drawPlayer(sf::RenderWindow& window)
