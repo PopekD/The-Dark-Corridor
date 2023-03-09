@@ -10,6 +10,7 @@ Create an interactive 2.5D horror game in C++.
     Give control to a player. // DONE
     Base player rotation on the mouse position on the screen. // CURRENTLY WORKING
     Calculate the distance between the player and the wall and draw them on the screen using the raycasting method. // NOT DONE
+    Textures // NOT DONE
     Add a light source to the player. // NOT DONE
     Add objectives to the player. // NOT DONE
     -- MAYBE: "Add an enemy" --
