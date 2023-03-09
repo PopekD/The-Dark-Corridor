@@ -2,14 +2,14 @@
 #include <iostream>
 
 sf::RectangleShape Player::player;
-float Player::speed = 1.0f;
+float Player::speed = 0.5f;
 sf::Vector2f Player::movement(0.f, 0.f);
 float Player::rotation = 0.0f;
+sf::Vector2f Player::direction;
 Player::Player() {
-    player.setSize(sf::Vector2f(09.0f, 09.0f));
-	player.setPosition(sf::Vector2f(30.0f, 30.0f));
+    player.setSize(sf::Vector2f(07.0f, 07.0f));
+	player.setPosition(sf::Vector2f(15.0f, 10.0f));
     player.setFillColor(sf::Color::Green);
-    
 }
 void Player::playerMove(sf::RenderWindow& window, float angle)
 {
@@ -17,36 +17,65 @@ void Player::playerMove(sf::RenderWindow& window, float angle)
     player.setOrigin(player.getLocalBounds().width / 2, player.getLocalBounds().height / 2);
     
     rotation += angle;
+    if (rotation > 360 || rotation < -360) {
+        rotation = 0;
+        
+    }
+
     player.setRotation(rotation);
 
     float radians = rotation * M_PI / 180;
 
-    sf::Vector2f direction(std::cos(radians), std::sin(radians));
+    direction = sf::Vector2f(std::cos(radians), std::sin(radians));
     direction /= std::sqrt(direction.x * direction.x + direction.y * direction.y);
-
+   
     movement.x = 0.f;
     movement.y = 0.f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-    {
-        movement += sf::Vector2f(direction.y, -direction.x) * speed;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-    {
-        movement -= sf::Vector2f(direction.y, -direction.x) * speed;
-    }
+
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
-        movement += direction * speed;
+        if (direction != sf::Vector2f(0, 0)) {
+            movement += direction * speed;
+        }
+        else {
+            movement.y -= speed;
+        }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
-        movement -= direction * speed;
+        if (direction != sf::Vector2f(0, 0)) {
+            movement -= direction * speed;
+        }
+        else {
+            movement.y += speed;
+        }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+    {
+        if (direction != sf::Vector2f(0, 0)) {
+            sf::Vector2f horizontalDirection(-direction.y, direction.x);
+            movement -= horizontalDirection * speed;
+        }
+        else {
+            movement.x -= speed;
+        }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+    {
+        if (direction != sf::Vector2f(0, 0)) {
+            sf::Vector2f horizontalDirection(-direction.y, direction.x);
+            movement += horizontalDirection * speed;
+        }
+        else {
+            movement.x += speed;
+        }
     }
 
     if (movement.x != 0.f && movement.y != 0.f)
     {
-       movement /= std::sqrt(2.f);
+        movement /= std::sqrt(2.f);
     }
 
     for (int i = 0; i < Minimap::ROWS; i++) {
@@ -82,7 +111,6 @@ void Player::playerMove(sf::RenderWindow& window, float angle)
                 
     }
     
-
     player.move(movement);
 }
 
@@ -93,7 +121,9 @@ sf::FloatRect Player::getBoundingBox() {
 sf::Vector2f Player::getPlayerPosition() {
     return player.getPosition();
 }
-
+sf::Vector2f Player::getDirection() {
+    return direction;
+};
 
 
 void Player::drawPlayer(sf::RenderWindow& window)

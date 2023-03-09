@@ -14,8 +14,7 @@ void WindowManager::setWindow(int WIDTH, int HEIGHT, std::string TITLE)
 void WindowManager::run() {
 
     minimap.initMiniMap(window);
-    window.setMouseCursorVisible(true);
-    window.setMouseCursorGrabbed(true);
+    window.setMouseCursorVisible(false);
 
 
     sf::Vector2i center(window.getSize().x / 2, window.getSize().y / 2);
@@ -39,25 +38,25 @@ void WindowManager::run() {
         sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
         sf::Vector2i mouseDiff = mousePosition - prevMousePosition;
 
-        float direction = 0.0f;
+        float angle = 0.0f;
         if (mouseDiff.x < 0) {
-            direction = -5.0f;
+            angle = -5.0f;
         }
         else if (mouseDiff.x > 0) {
-            direction = 5.0f;
+            angle = 5.0f;
         }
 
 
-        player.playerMove(window, direction);
+        player.playerMove(window, angle);
 
         prevMousePosition = mousePosition;
 
         sf::Mouse::setPosition(center, window);
 
         window.clear(sf::Color::Blue);
+        raycast.castRay(window, player.getPlayerPosition());
         minimap.drawMiniMap(window);
         player.drawPlayer(window);
-        raycast.castRay(window);
         window.display();
 
     }

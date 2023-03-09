@@ -12,11 +12,12 @@ public:
     static const int ROWS = 16;
     static const int COLUMNS = 18;
     static const int Map[ROWS][COLUMNS];
+    static sf::Vector2f cellSize;
     static sf::FloatRect getBoundingBox(int i, int j);
 private:
-    sf::Vector2f cellSize;
     static sf::RectangleShape grid[ROWS][COLUMNS];
 };
 
 
 #endif
+

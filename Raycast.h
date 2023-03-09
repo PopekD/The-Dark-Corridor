@@ -3,10 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 #include "Player.h"
+
 class Raycast {
 	public:
 		Raycast(sf::RenderWindow& window);
-		void castRay(sf::RenderWindow& window);
+		void castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos);
 		~Raycast();
 	private:
 		float FOV;
