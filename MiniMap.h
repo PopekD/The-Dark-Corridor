@@ -2,6 +2,7 @@
 #define MINIMAP_H
 
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 #include <iostream>
 #include <vector>
 
@@ -16,6 +17,7 @@ public:
     static sf::FloatRect getBoundingBox(int i, int j);
 private:
     static sf::RectangleShape grid[ROWS][COLUMNS];
+    
 };
 
 

@@ -9,7 +9,7 @@ const double M_PI = std::acos(-1);
 class Player {
 	public:
 		Player();
-		void playerMove(sf::RenderWindow& window, float angle);
+		void playerMove(sf::RenderWindow& window, float angle, float dt);
 		void drawPlayer(sf::RenderWindow& window);
 		static sf::Vector2f getPlayerPosition();
 		static sf::FloatRect getBoundingBox();

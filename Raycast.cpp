@@ -1,44 +1,25 @@
 #include "Raycast.h"
 
-
 Raycast::Raycast(sf::RenderWindow& window)
 {
-    FOV = 60.0f ;
     SCREEN_WIDTH = window.getSize().x;
     SCREEN_HEIGHT = window.getSize().y;
 }
 
-void Raycast::castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos)
+void Raycast::castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos, sf::Vector2f playerDirection)
 {
-
-    unsigned int playerPositionX = playerPos.x ;  
-    unsigned int playerPositionY = playerPos.y ; 
-    
-    sf::Vector2f playerDirection = Player::getDirection();
-    
+ 
     sf::Vector2f cameraPlane = sf::Vector2f(-playerDirection.y, playerDirection.x);
 
+    for (int i = 0; i < SCREEN_WIDTH; i++) {
 
-
-    float cameraPlaneLength = 1.0f; 
-    cameraPlane /= sqrt(cameraPlane.x * cameraPlane.x + cameraPlane.y * cameraPlane.y);
-    cameraPlane *= cameraPlaneLength;
-
-
-    const int numStripes = SCREEN_WIDTH;
-
-    
-
-    for (int i = 0; i < numStripes; i++) {
-
-  
 
         double cameraX = 2 * i / (double)SCREEN_WIDTH - 1;
         double rayDirX = playerDirection.x + cameraPlane.x * cameraX;
         double rayDirY = playerDirection.y + cameraPlane.y * cameraX;
 
-        int mapX = static_cast<int>(playerPositionX );
-        int mapY = static_cast<int>(playerPositionY );
+        int mapX = static_cast<int>(playerPos.x);
+        int mapY = static_cast<int>(playerPos.y);
 
 
         double deltaDistX = (rayDirX == 0) ? 1e30 : std::abs(1 / rayDirX);
@@ -56,22 +37,22 @@ void Raycast::castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos)
         if (rayDirX < 0)
         {
             stepX = -1;
-            sideDistX = (playerPositionX - mapX) * deltaDistX;
+            sideDistX = (playerPos.x - mapX) * deltaDistX;
         }
         else
         {
             stepX = 1;
-            sideDistX = (mapX + 1.0 - playerPositionX) * deltaDistX;
+            sideDistX = (mapX + 1.0 - playerPos.x) * deltaDistX;
         }
         if (rayDirY < 0)
         {
             stepY = -1;
-            sideDistY = (playerPositionY - mapY) * deltaDistY;
+            sideDistY = (playerPos.y - mapY) * deltaDistY;
         }
         else
         {
             stepY = 1;
-            sideDistY = (mapY + 1.0 - playerPositionY) * deltaDistY;
+            sideDistY = (mapY + 1.0 - playerPos.y) * deltaDistY;
         }
 
 
@@ -95,9 +76,6 @@ void Raycast::castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos)
             }
         }
 
-
-
-
         double perpWallDist = 0.0;
         if (side == 0) {
             perpWallDist = (sideDistX - deltaDistX) / 10;
@@ -105,9 +83,7 @@ void Raycast::castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos)
         else {
             perpWallDist = (sideDistY - deltaDistY) / 10;
         }
-        
-
-        if (hit == 1) {
+  
             float lineHeight = SCREEN_HEIGHT / perpWallDist;
             int drawStart = -lineHeight / 2 + SCREEN_HEIGHT / 2;
             if (drawStart < 0) drawStart = 0;
@@ -121,7 +97,6 @@ void Raycast::castRay(sf::RenderWindow& window, const sf::Vector2f& playerPos)
             line[1].color = sf::Color::Black;
 
             window.draw(line);
-        }
 
     }
 }

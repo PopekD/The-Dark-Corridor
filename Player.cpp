@@ -2,27 +2,34 @@
 #include <iostream>
 
 sf::RectangleShape Player::player;
-float Player::speed = 0.5f;
+float Player::speed = 0.05f;
 sf::Vector2f Player::movement(0.f, 0.f);
 float Player::rotation = 0.0f;
 sf::Vector2f Player::direction;
 Player::Player() {
-    player.setSize(sf::Vector2f(07.0f, 07.0f));
+    player.setSize(sf::Vector2f(08.f, 08.f));
 	player.setPosition(sf::Vector2f(15.0f, 10.0f));
     player.setFillColor(sf::Color::Green);
 }
-void Player::playerMove(sf::RenderWindow& window, float angle)
+void Player::playerMove(sf::RenderWindow& window, float angle, float dt)
 {
     
     player.setOrigin(player.getLocalBounds().width / 2, player.getLocalBounds().height / 2);
-    
-    rotation += angle;
-    if (rotation > 360 || rotation < -360) {
-        rotation = 0;
         
-    }
 
-    player.setRotation(rotation);
+        rotation += angle;
+        if (rotation >= 360){
+
+            rotation -= 360;
+        }
+        else if(rotation <= -360)
+        {
+            rotation += 360;
+        }
+
+        player.setRotation(rotation);
+
+
 
     float radians = rotation * M_PI / 180;
 
@@ -32,44 +39,46 @@ void Player::playerMove(sf::RenderWindow& window, float angle)
     movement.x = 0.f;
     movement.y = 0.f;
 
-
+    float speedDelta = speed * dt;
+    
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
     {
         if (direction != sf::Vector2f(0, 0)) {
-            movement += direction * speed;
+            movement += direction * speedDelta;
+            std::cout << speedDelta;
         }
         else {
-            movement.y -= speed;
+            movement.y -= speedDelta;
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
     {
         if (direction != sf::Vector2f(0, 0)) {
-            movement -= direction * speed;
+            movement -= direction * speedDelta;
         }
         else {
-            movement.y += speed;
+            movement.y += speedDelta;
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
     {
         if (direction != sf::Vector2f(0, 0)) {
             sf::Vector2f horizontalDirection(-direction.y, direction.x);
-            movement -= horizontalDirection * speed;
+            movement -= horizontalDirection * speedDelta;
         }
         else {
-            movement.x -= speed;
+            movement.x -= speedDelta;
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
     {
         if (direction != sf::Vector2f(0, 0)) {
             sf::Vector2f horizontalDirection(-direction.y, direction.x);
-            movement += horizontalDirection * speed;
+            movement += horizontalDirection * speedDelta;
         }
         else {
-            movement.x += speed;
+            movement.x += speedDelta;
         }
     }
 
@@ -128,7 +137,7 @@ sf::Vector2f Player::getDirection() {
 
 void Player::drawPlayer(sf::RenderWindow& window)
 {
-    window.draw(player);
+   // window.draw(player);
 }
 
 Player::~Player() {}
