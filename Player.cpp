@@ -46,7 +46,6 @@ void Player::playerMove(sf::RenderWindow& window, float angle, float dt)
     {
         if (direction != sf::Vector2f(0, 0)) {
             movement += direction * speedDelta;
-            std::cout << speedDelta;
         }
         else {
             movement.y -= speedDelta;
@@ -89,7 +88,7 @@ void Player::playerMove(sf::RenderWindow& window, float angle, float dt)
 
     for (int i = 0; i < Minimap::ROWS; i++) {
         for (int j = 0; j < Minimap::COLUMNS; j++) {
-            if (Minimap::Map[i][j] == 1) {
+            if (Minimap::Map[i][j] > 0) {
       
                 sf::FloatRect playerBounds = getBoundingBox();
                 sf::FloatRect wallBounds = Minimap::getBoundingBox(i, j);

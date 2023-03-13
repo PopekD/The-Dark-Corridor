@@ -15,6 +15,8 @@ class WindowManager {
         sf::RenderWindow window;
         Minimap minimap;
         Player player;
+        sf::Texture inputTexture;
+        sf::Sprite inputSprite;
 };
 
 #endif
