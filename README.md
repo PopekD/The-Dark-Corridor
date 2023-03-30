@@ -9,5 +9,5 @@ The aim was to create a simple raycasting 'game' in c++. I used the SFML library
 
 # If you want to try download and run Game.exe
 
-# I mostly followed this tutorial 
+# Most of the time I followed this tutorial 
 https://lodev.org/cgtutor/raycasting3.html
