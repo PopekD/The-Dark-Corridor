@@ -1,4 +1,4 @@
-# This design is terribly outdated and incorrect, but I still think it's cool. 
+# This project is terribly outdated and incorrect, but I still think it's cool. 
 
 # The-Dark-Corridor
 Raycasting Simulation
